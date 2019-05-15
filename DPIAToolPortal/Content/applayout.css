@@ -1,0 +1,81 @@
+﻿/*
+ * -- BASE STYLES --
+ * Most of these are inherited from Base, but I want to change a few.
+ */
+
+
+/*
+ * -- HELPER STYLES --
+ * Over-riding some of the .pure-button styles to make my buttons look unique
+ */
+.primary-button,
+.secondary-button {
+    border-radius: 20px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.primary-button {
+    margin: 1em 0;
+    background: #1b98f8;
+    color: #fff;
+}
+
+.secondary-button {
+    padding: 0.5em 2em;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #666;
+    font-size: 80%;
+}
+
+.button-success,
+.button-error,
+.button-warning {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-reverse {
+    background: #4c5d81; /* this is a green */
+    color: white;
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(255, 204, 0); /* this is an orange */
+}
+
+.button-xsmall {
+    font-size: 70%;
+}
+
+.button-small {
+    font-size: 85%;
+}
+
+.button-large {
+    font-size: 110%;
+}
+
+.button-xlarge {
+    font-size: 125%;
+}
+
+@media (max-width: 980px) {
+    /* Enable use of floated navbar text */
+    .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}

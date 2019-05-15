@@ -1,0 +1,240 @@
+﻿**************************************************************************
+**************************************************************************
+*** The DPIA makes use of a number of third-party commercial and
+*** non-commercial components. It is therefore nescessary for anyone
+*** making use of this DPIA code to ensure that all nescessary licences have been
+*** purchased and appropriate Keys have been configured.
+***
+*** Third party componenets ibclude (but are not limited to) 
+*** Microsoft SQL
+*** Microsoft IIS
+*** Dev Express https://www.devexpress.com/
+*** Google Captcha
+*** Google Geocode
+*** 
+*** The following content, within this file represent the Web.Config File
+*** which is required for this solution. All access keys have
+*** been removed. It will therefore be nescessary for anyone setting up 
+*** this solution to configure appropriate keys and Database credentials.
+*** Items to be configured are indicate by XXXX
+**************************************************************************
+
+
+
+
+
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=169433
+  -->
+<configuration>
+  <configSections>
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+    <sectionGroup name="devExpress">
+      <section name="themes" type="DevExpress.Web.ThemesConfigurationSection, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" requirePermission="false" />
+      <section name="compression" type="DevExpress.Web.CompressionConfigurationSection, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" requirePermission="false" />
+      <section name="settings" type="DevExpress.Web.SettingsConfigurationSection, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXXX" requirePermission="false" />
+      <section name="errors" type="DevExpress.Web.ErrorsConfigurationSection, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" requirePermission="false" />
+      <section name="resources" type="DevExpress.Web.ResourcesConfigurationSection, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" requirePermission="false" />
+      <section name="bootstrap" type="DevExpress.Web.Bootstrap.BootstrapConfigurationSection, DevExpress.Web.Bootstrap.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" requirePermission="false" />
+    </sectionGroup>
+    <sectionGroup name="applicationSettings" type="System.Configuration.ApplicationSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <section name="InformationSharingPortal.My.MySettings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    </sectionGroup>
+    <sectionGroup name="system.web.extensions" type="System.Web.Configuration.SystemWebExtensionsSectionGroup, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <sectionGroup name="scripting" type="System.Web.Configuration.ScriptingSectionGroup, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+        <section name="scriptResourceHandler" type="System.Web.Configuration.ScriptingScriptResourceHandlerSection, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" requirePermission="false" allowDefinition="MachineToApplication" />
+        <sectionGroup name="webServices" type="System.Web.Configuration.ScriptingWebServicesSectionGroup, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+          <section name="jsonSerialization" type="System.Web.Configuration.ScriptingJsonSerializationSection, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" requirePermission="false" allowDefinition="Everywhere" />
+        </sectionGroup>
+      </sectionGroup>
+    </sectionGroup>
+  </configSections>
+  <connectionStrings>
+    <add name="InformationSharingPortal.My.MySettings.csISPData"
+      connectionString="Data Source=localhost;Initial Catalog=dpiatool;Integrated Security=True"
+      providerName="System.Data.SqlClient" />
+    <add name="InformationSharingPortal.My.MySettings.csICOData"
+      connectionString="Data Source=localhost;Initial Catalog=icodata;Integrated Security=True"
+      providerName="System.Data.SqlClient" />
+    <add name="dpiasandpitConnectionString" connectionString="Data Source=XXXX;Initial Catalog=dpiatool;Integrated Security=True"
+      providerName="System.Data.SqlClient" />
+  </connectionStrings>
+  <system.web>
+    <compilation debug="true" strict="false" explicit="true" targetFramework="4.5">
+      <assemblies>
+        <add assembly="System.Web.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089" />
+        <add assembly="System.Data.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089" />
+        <add assembly="DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Printing.v17.2.Core, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Data.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.DataAccess.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Charts.v17.2.Core, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.PivotGrid.v17.2.Core, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Sparkline.v17.2.Core, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Web.ASPxThemes.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.RichEdit.v17.2.Core, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Web.ASPxHtmlEditor.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Web.ASPxSpellChecker.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Office.v17.2.Core, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.SpellChecker.v17.2.Core, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Web.Resources.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Web.Bootstrap.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="DevExpress.Web.ASPxPivotGrid.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=XXXX" />
+        <add assembly="System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=XXXX" />
+      </assemblies>
+    </compilation>
+    <httpRuntime targetFramework="4.5" maxRequestLength="200000" executionTimeout="40000" />
+    <pages>
+      <namespaces>
+        <add namespace="System.Web.Optimization" />
+      </namespaces>
+      <controls>
+        <add assembly="Microsoft.AspNet.Web.Optimization.WebForms" namespace="Microsoft.AspNet.Web.Optimization.WebForms" tagPrefix="webopt" />
+      </controls>
+    </pages>
+    <authentication mode="Forms">
+      <forms loginUrl="~/Account/Login" defaultUrl="~/" timeout="2880" />
+    </authentication>
+    <profile defaultProvider="DefaultProfileProvider">
+      <providers>
+        <add name="DefaultProfileProvider" type="System.Web.Providers.DefaultProfileProvider, System.Web.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" connectionStringName="csISPData" applicationName="/" />
+      </providers>
+    </profile>
+    <membership defaultProvider="ITSPSqlMembershipProvider">
+      <providers>
+        <!-- Add a customized SqlMembershipProvider -->
+        <add name="ITSPSqlMembershipProvider" type="System.Web.Security.SqlMembershipProvider" connectionStringName="InformationSharingPortal.My.MySettings.csISPData" enablePasswordRetrieval="false" enablePasswordReset="true" requiresQuestionAndAnswer="false" applicationName="InformationSharingPortal" requiresUniqueEmail="true" passwordFormat="Hashed" maxInvalidPasswordAttempts="5" minRequiredPasswordLength="7" minRequiredNonalphanumericCharacters="1" passwordAttemptWindow="10" passwordStrengthRegularExpression="" />
+      </providers>
+    </membership>
+    <roleManager enabled="true">
+      <providers>
+        <add connectionStringName="InformationSharingPortal.My.MySettings.csISPData" applicationName="InformationSharingPortal" name="DefaultRoleProvider" type="System.Web.Providers.DefaultRoleProvider, System.Web.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+      </providers>
+    </roleManager>
+    <!--
+            If you are deploying to a cloud environment that has multiple web server instances,
+            you should change session state mode from "InProc" to "Custom". In addition,
+            change the connection string named "DefaultConnection" to connect to an instance
+            of SQL Server (including SQL Azure and SQL  Compact) instead of to SQL Server Express.
+      -->
+    <sessionState mode="InProc" customProvider="DefaultSessionProvider">
+      <providers>
+        <add name="DefaultSessionProvider" type="System.Web.Providers.DefaultSessionStateProvider, System.Web.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" connectionStringName="DefaultConnection" />
+      </providers>
+    </sessionState>
+    <httpModules>
+      <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" name="ASPxHttpHandlerModule" />
+    </httpModules>
+    <httpHandlers>
+      <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" verb="GET,POST" path="DX.ashx" validate="false" />
+      <add verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+    </httpHandlers>
+  </system.web>
+  <system.web.extensions>
+    <scripting>
+      <webServices>
+        <jsonSerialization maxJsonLength="1024000">
+        </jsonSerialization>
+      </webServices>
+    </scripting>
+  </system.web.extensions>
+  <system.webServer>
+    <security>
+      <requestFiltering>
+        <requestLimits maxAllowedContentLength="209715200" />
+      </requestFiltering>
+    </security>
+    <modules runAllManagedModulesForAllRequests="true">
+      <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" name="ASPxHttpHandlerModule" />
+    </modules>
+    <handlers>
+      <!-- Register the HttpHandler used for BotDetect Captcha requests
+  (IIS 7.0+) -->
+      <remove name="BotDetectCaptchaHandler" />
+      <add name="BotDetectCaptchaHandler" preCondition="integratedMode" verb="GET" path="BotDetectCaptcha.ashx" type="BotDetect.Web.CaptchaHandler, BotDetect" />
+      <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" verb="GET,POST" path="DX.ashx" name="ASPxHttpHandlerModule" preCondition="integratedMode" />
+      <add name="ASPxUploadProgressHandler" preCondition="integratedMode" verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v17.2, Version=17.2.6.0, Culture=neutral, PublicKeyToken=XXXX" />
+    </handlers>
+    <validation validateIntegratedModeConfiguration="false" />
+  </system.webServer>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="DotNetOpenAuth.Core" publicKeyToken="2780ccd10d57b246" />
+        <bindingRedirect oldVersion="1.0.0.0-4.0.0.0" newVersion="4.1.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="DotNetOpenAuth.AspNet" publicKeyToken="2780ccd10d57b246" />
+        <bindingRedirect oldVersion="0.0.0.0-4.1.0.0" newVersion="4.1.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.2.0" newVersion="5.2.2.0" />
+      </dependentAssembly>
+      <!--<dependentAssembly>
+        <assemblyIdentity name="EntityFramework" publicKeyToken="b77a5c561934e089" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-6.0.0.0" newVersion="6.0.0.0" />
+      </dependentAssembly>-->
+      <dependentAssembly>
+        <assemblyIdentity name="DotNetOpenAuth.AspNet" publicKeyToken="2780CCD10D57B246" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.1.0.0" newVersion="4.1.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31BF3856AD364E35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.2.0" newVersion="5.2.2.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+    
+  
+    
+  </runtime>
+  <entityFramework>
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.SqlConnectionFactory, EntityFramework" />
+    <!--<providers>
+      <provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer" />
+    </providers>-->
+  </entityFramework>
+  <appSettings>
+    <add key="recaptchaPublicKey" value="XXXX" />
+    <add key="recaptchaPrivateKey" value="XXXX" />
+    <!--<add key="recaptchaApiVersion" value="2" />-->
+    <add key="CookieDetectionPage" value="~/cookiecheck.aspx" lockItem="true" />
+    <add key="CookieFailPage" value="~/nocookies.aspx" lockItem="true" />
+    
+    
+  </appSettings>
+  <devExpress>
+    <themes enableThemesAssembly="true" styleSheetTheme="" theme="" customThemeAssemblies="" baseColor="" font="" />
+    <compression enableHtmlCompression="false" enableCallbackCompression="true" enableResourceCompression="true" enableResourceMerging="true" />
+    <settings doctypeMode="Html5" rightToLeft="false" embedRequiredClientLibraries="false" ieCompatibilityVersion="edge" accessibilityCompliant="false" bootstrapMode="Bootstrap3" checkReferencesToExternalScripts="true" protectControlState="true" />
+    <errors callbackErrorRedirectUrl="" />
+    <bootstrap mode="Bootstrap3" iconSet="Embedded" />
+  </devExpress>
+  <system.net>
+    <mailSettings>
+      <smtp from="admin@XXXX.org.uk">
+        <network host="XXXX" password="XXXX" userName="XXXX" />
+      </smtp>
+    </mailSettings>
+  </system.net>
+  <applicationSettings>
+    <InformationSharingPortal.My.MySettings>
+      <setting name="DisableMultiselectShowAll" serializeAs="String">
+        <value>{ allSelectedText: 'All Selected', buttonText: function(options, select) { var numberOfOptions = $(this).children('option').length; if (options.length === 0) { return 'None Selected'; } else { var labels = []; options.each(function() { if ($(this).attr('label') !== undefined) { labels.push($(this).attr('label')); } else { labels.push($(this).html()); } }); return labels.join('&lt;/br&gt;') + ''; } }, buttonWidth: '100%', buttonClass: 'btn btn-default btn-wrap', }</value>
+      </setting>
+    </InformationSharingPortal.My.MySettings>
+  </applicationSettings>
+</configuration>

@@ -1,0 +1,839 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="isporgusers" targetNamespace="http://tempuri.org/isporgusers.xsd" xmlns:mstns="http://tempuri.org/isporgusers.xsd" xmlns="http://tempuri.org/isporgusers.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" GeneratorFunctionsComponentClassName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" UserFunctionsComponentName="QueriesTableAdapter" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="dpiasandpitConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="dpiasandpitConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.dpiasandpitConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="VerifyByEmailTableTableAdapter" GeneratorDataComponentClassName="VerifyByEmailTableTableAdapter" Name="VerifyByEmailTable" UserDataComponentName="VerifyByEmailTableTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateMethods="Get" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="GetData">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        ou.OrganisationID, ou.OrganisationUserEmail, ou.RoleID, ou.ConfirmationHash, ou.Confirmed, o.OrganisationTypeID, o.SponsorOrganisationID, r.Role, 
+                         ou.OrganisationUserName, m.UserId, o.OrganisationName, COALESCE (o.ICORegistrationNumber, N'') AS ICORegistrationNumber,
+                             (SELECT        COUNT(DISTINCT ou.OrganisationID) AS Expr2
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.OrganisationID INNER JOIN
+                                                         isp_Roles AS r ON ou.RoleID = r.RoleID INNER JOIN
+                                                         aspnet_Membership AS m ON ou.OrganisationUserEmail = m.Email
+                               WHERE        (ou.OrganisationUserEmail = @Email) AND (o.InactivatedDate IS NULL) AND (ou.Active = 1) AND (ou.ResignDate IS NULL)) +
+                             (SELECT        COUNT(DISTINCT o.OrganisationID) AS TotalOrgs
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.SponsorOrganisationID INNER JOIN
+                                                         aspnet_Membership ON ou.OrganisationUserEmail = aspnet_Membership.Email
+                               WHERE        (ou.ResignDate IS NULL) AND (o.InactivatedDate IS NULL) AND (ou.Validated = 1) AND (ou.Active = 1) AND (ou.OrganisationUserEmail = @Email) AND 
+                                                         (ou.Confirmed = 1) AND (o.OrganisationTypeID = 2)) AS TotalOrgs,
+                             (SELECT        CAST(CASE WHEN COUNT(SuperAdminID) &gt; 0 THEN 1 ELSE 0 END AS Bit) AS IsSuperAdmin
+                               FROM            isp_SuperAdmins
+                               WHERE        (SuperAdminEmail = @Email) AND (Active = 1)) AS IsSuperAdmin, o.AdminGroupID, dbo.CheckUserAgreedTOU(@Email) AS TOUAgreed
+FROM            isp_OrganisationUsers AS ou INNER JOIN
+                         isp_Organisations AS o ON ou.OrganisationID = o.OrganisationID INNER JOIN
+                         isp_Roles AS r ON ou.RoleID = r.RoleID INNER JOIN
+                         aspnet_Membership AS m ON ou.OrganisationUserEmail = m.Email
+WHERE        (ou.OrganisationUserEmail = @Email) AND (o.InactivatedDate IS NULL) AND (ou.Active = 1) AND (ou.ResignDate IS NULL) AND (ou.Validated = 1)
+UNION
+SELECT        o.OrganisationID, ou.OrganisationUserEmail, 5 AS RoleID, ou.ConfirmationHash, ou.Confirmed, o.OrganisationTypeID, o.SponsorOrganisationID, 
+                         'Administrator' AS Role, ou.OrganisationUserName, aspnet_Membership_1.UserId, o.OrganisationName, COALESCE (o.ICORegistrationNumber, N'') 
+                         AS ICORegistrationNumber,
+                             (SELECT        COUNT(DISTINCT ou.OrganisationID) AS Expr1
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.OrganisationID INNER JOIN
+                                                         isp_Roles AS r ON ou.RoleID = r.RoleID INNER JOIN
+                                                         aspnet_Membership AS m ON ou.OrganisationUserEmail = m.Email
+                               WHERE        (ou.OrganisationUserEmail = @Email) AND (o.InactivatedDate IS NULL) AND (ou.Active = 1) AND (ou.ResignDate IS NULL)) +
+                             (SELECT        COUNT(DISTINCT o.OrganisationID) AS TotalOrgs
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.SponsorOrganisationID INNER JOIN
+                                                         aspnet_Membership AS aspnet_Membership_2 ON ou.OrganisationUserEmail = aspnet_Membership_2.Email
+                               WHERE        (ou.ResignDate IS NULL) AND (ou.Validated = 1) AND (ou.Active = 1) AND (ou.OrganisationUserEmail = @Email) AND (ou.Confirmed = 1) AND 
+                                                         (o.OrganisationTypeID = 2)) AS TotalOrgs,
+                             (SELECT        CAST(CASE WHEN COUNT(SuperAdminID) &gt; 0 THEN 1 ELSE 0 END AS Bit) AS IsSuperAdmin
+                               FROM            isp_SuperAdmins AS isp_SuperAdmins_1
+                               WHERE        (SuperAdminEmail = @Email) AND (Active = 1)) AS IsSuperAdmin, o.AdminGroupID, dbo.CheckUserAgreedTOU(@Email) AS TOUAgreed
+FROM            isp_OrganisationUsers AS ou INNER JOIN
+                         isp_Organisations AS o ON ou.OrganisationID = o.SponsorOrganisationID INNER JOIN
+                         aspnet_Membership AS aspnet_Membership_1 ON ou.OrganisationUserEmail = aspnet_Membership_1.Email
+WHERE        (ou.ResignDate IS NULL) AND (ou.Validated = 1) AND (o.InactivatedDate IS NULL) AND (ou.Active = 1)
+GROUP BY o.OrganisationID, ou.OrganisationUserEmail, ou.ConfirmationHash, o.OrganisationTypeID, o.SponsorOrganisationID, ou.OrganisationUserName, 
+                         aspnet_Membership_1.UserId, o.OrganisationName, o.ICORegistrationNumber, ou.Confirmed, o.AdminGroupID
+HAVING        (ou.OrganisationUserEmail = @Email) AND (ou.Confirmed = 1) AND (o.OrganisationTypeID = 2)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="Email" ColumnName="OrganisationUserEmail" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="OrganisationID" DataSetColumn="OrganisationID" />
+              <Mapping SourceColumn="OrganisationUserEmail" DataSetColumn="OrganisationUserEmail" />
+              <Mapping SourceColumn="RoleID" DataSetColumn="RoleID" />
+              <Mapping SourceColumn="ConfirmationHash" DataSetColumn="ConfirmationHash" />
+              <Mapping SourceColumn="Confirmed" DataSetColumn="Confirmed" />
+              <Mapping SourceColumn="OrganisationTypeID" DataSetColumn="OrganisationTypeID" />
+              <Mapping SourceColumn="SponsorOrganisationID" DataSetColumn="SponsorOrganisationID" />
+              <Mapping SourceColumn="Role" DataSetColumn="Role" />
+              <Mapping SourceColumn="OrganisationUserName" DataSetColumn="OrganisationUserName" />
+              <Mapping SourceColumn="UserId" DataSetColumn="UserId" />
+              <Mapping SourceColumn="OrganisationName" DataSetColumn="OrganisationName" />
+              <Mapping SourceColumn="ICORegistrationNumber" DataSetColumn="ICORegistrationNumber" />
+              <Mapping SourceColumn="TotalOrgs" DataSetColumn="TotalOrgs" />
+              <Mapping SourceColumn="IsSuperAdmin" DataSetColumn="IsSuperAdmin" />
+              <Mapping SourceColumn="AdminGroupID" DataSetColumn="AdminGroupID" />
+              <Mapping SourceColumn="TOUAgreed" DataSetColumn="TOUAgreed" />
+            </Mappings>
+            <Sources>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetByEmailOrg" GetMethodModifier="Public" GetMethodName="GetByEmailOrg" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetByEmailOrg" UserSourceName="GetByEmailOrg">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        ou.OrganisationID, ou.OrganisationUserEmail, ou.RoleID, ou.ConfirmationHash, ou.Confirmed, o.OrganisationTypeID, o.SponsorOrganisationID, r.Role, 
+                         ou.OrganisationUserName, m.UserId, o.OrganisationName, COALESCE (o.ICORegistrationNumber, N'') AS ICORegistrationNumber,
+                             (SELECT        COUNT(DISTINCT ou.OrganisationID) AS Expr2
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.OrganisationID INNER JOIN
+                                                         isp_Roles AS r ON ou.RoleID = r.RoleID INNER JOIN
+                                                         aspnet_Membership AS m ON ou.OrganisationUserEmail = m.Email
+                               WHERE        (ou.OrganisationUserEmail = @Email) AND (ou.Active = 1) AND (ou.ResignDate IS NULL)) +
+                             (SELECT        COUNT(DISTINCT o.OrganisationID) AS TotalOrgs
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.SponsorOrganisationID INNER JOIN
+                                                         aspnet_Membership ON ou.OrganisationUserEmail = aspnet_Membership.Email
+                               WHERE        (ou.ResignDate IS NULL) AND (ou.Validated = 1) AND (ou.Active = 1) AND (ou.OrganisationUserEmail = @Email) AND (ou.Confirmed = 1) AND 
+                                                         (o.OrganisationTypeID = 2)) AS TotalOrgs,
+                             (SELECT        CAST(CASE WHEN COUNT(SuperAdminID) &gt; 0 THEN 1 ELSE 0 END AS Bit) AS IsSuperAdmin
+                               FROM            isp_SuperAdmins
+                               WHERE        (SuperAdminEmail = @Email) AND (Active = 1)) AS IsSuperAdmin, o.AdminGroupID, dbo.CheckUserAgreedTOU(@Email) AS TOUAgreed
+FROM            isp_OrganisationUsers AS ou INNER JOIN
+                         isp_Organisations AS o ON ou.OrganisationID = o.OrganisationID INNER JOIN
+                         isp_Roles AS r ON ou.RoleID = r.RoleID INNER JOIN
+                         aspnet_Membership AS m ON ou.OrganisationUserEmail = m.Email
+WHERE        (ou.OrganisationUserEmail = @Email) AND (ou.Active = 1) AND (ou.ResignDate IS NULL) AND (ou.Validated = 1) AND (ou.OrganisationID = @orgid) AND 
+                         (o.InactivatedDate IS NULL)
+UNION
+SELECT        o.OrganisationID, ou.OrganisationUserEmail, 5 AS RoleID, ou.ConfirmationHash, ou.Confirmed, o.OrganisationTypeID, o.SponsorOrganisationID, 
+                         'Administrator' AS Role, ou.OrganisationUserName, aspnet_Membership_1.UserId, o.OrganisationName, COALESCE (o.ICORegistrationNumber, N'') 
+                         AS ICORegistrationNumber,
+                             (SELECT        COUNT(DISTINCT ou.OrganisationID) AS Expr1
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.OrganisationID INNER JOIN
+                                                         isp_Roles AS r ON ou.RoleID = r.RoleID INNER JOIN
+                                                         aspnet_Membership AS m ON ou.OrganisationUserEmail = m.Email
+                               WHERE        (ou.OrganisationUserEmail = @Email) AND (ou.Active = 1) AND (ou.ResignDate IS NULL)) +
+                             (SELECT        COUNT(DISTINCT o.OrganisationID) AS TotalOrgs
+                               FROM            isp_OrganisationUsers AS ou INNER JOIN
+                                                         isp_Organisations AS o ON ou.OrganisationID = o.SponsorOrganisationID INNER JOIN
+                                                         aspnet_Membership AS aspnet_Membership_2 ON ou.OrganisationUserEmail = aspnet_Membership_2.Email
+                               WHERE        (ou.ResignDate IS NULL) AND (ou.Validated = 1) AND (ou.Active = 1) AND (ou.OrganisationUserEmail = @Email) AND (ou.Confirmed = 1) AND 
+                                                         (o.OrganisationTypeID = 2)) AS TotalOrgs,
+                             (SELECT        CAST(CASE WHEN COUNT(SuperAdminID) &gt; 0 THEN 1 ELSE 0 END AS Bit) AS IsSuperAdmin
+                               FROM            isp_SuperAdmins AS isp_SuperAdmins_1
+                               WHERE        (SuperAdminEmail = @Email) AND (Active = 1)) AS IsSuperAdmin, o.AdminGroupID, dbo.CheckUserAgreedTOU(@Email) AS TOUAgreed
+FROM            isp_OrganisationUsers AS ou INNER JOIN
+                         isp_Organisations AS o ON ou.OrganisationID = o.SponsorOrganisationID INNER JOIN
+                         aspnet_Membership AS aspnet_Membership_1 ON ou.OrganisationUserEmail = aspnet_Membership_1.Email
+WHERE        (ou.ResignDate IS NULL) AND (ou.Validated = 1) AND (ou.Active = 1) AND (o.OrganisationID = @orgid) AND (o.InactivatedDate IS NULL)
+GROUP BY o.OrganisationID, ou.OrganisationUserEmail, ou.ConfirmationHash, o.OrganisationTypeID, o.SponsorOrganisationID, ou.OrganisationUserName, 
+                         aspnet_Membership_1.UserId, o.OrganisationName, o.ICORegistrationNumber, ou.Confirmed, o.AdminGroupID
+HAVING        (ou.OrganisationUserEmail = @Email) AND (ou.Confirmed = 1) AND (o.OrganisationTypeID = 2)
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="Email" ColumnName="OrganisationUserEmail" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="orgid" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@orgid" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="UserAdminRolesTableAdapter" GeneratorDataComponentClassName="UserAdminRolesTableAdapter" Name="UserAdminRoles" UserDataComponentName="UserAdminRolesTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateMethods="Get" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="GetData">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        COALESCE
+                             ((SELECT        TOP (1) 1 AS AO
+                                 FROM            isp_OrganisationUsers
+                                 WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 1) AND 
+                                                          (ResignDate IS NULL)), 0) AS AO, COALESCE
+                             ((SELECT        TOP (1) 1 AS VIEWER
+                                 FROM            isp_OrganisationUsers AS isp_OrganisationUsers_6
+                                 WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 4) AND 
+                                                          (ResignDate IS NULL)), 0) AS VIEWER, COALESCE
+                             ((SELECT        1 AS Admin
+                                 FROM            isp_OrganisationUsers AS isp_OrganisationUsers_5
+                                 WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 5) AND 
+                                                          (ResignDate IS NULL)), 0) AS Admin, COALESCE
+                             ((SELECT        TOP (1) 1 AS CSO
+                                 FROM            isp_OrganisationUsers AS isp_OrganisationUsers_1
+                                 WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 6) AND 
+                                                          (ResignDate IS NULL)), 0) AS CSO, COALESCE
+                             ((SELECT        TOP (1) 1 AS IAO
+                                 FROM            isp_OrganisationUsers AS isp_OrganisationUsers_1
+                                 WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 7) AND 
+                                                          (ResignDate IS NULL)), 0) AS IAO, COALESCE
+                             ((SELECT        TOP (1) 1 AS IGO
+                                 FROM            isp_OrganisationUsers AS isp_OrganisationUsers_4
+                                 WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 8) AND 
+                                                          (ResignDate IS NULL)), 0) AS IGO, COALESCE
+                             ((SELECT        TOP (1) 1 AS DELEG
+                                 FROM            isp_OrganisationUsers AS isp_OrganisationUsers_2
+                                 WHERE        (OrganisationID = @OrganisationID) AND (DelegateRoleTo = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 1) AND 
+                                                          (ResignDate IS NULL)), 0) AS DELEG,
+COALESCE
+                             ((SELECT        TOP (1) 1 AS IGO
+                                 FROM            isp_OrganisationUsers AS isp_OrganisationUsers_7
+                                 WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email) AND (Confirmed = 1) AND (Active = 1) AND (RoleID = 10) AND 
+                                                          (ResignDate IS NULL)), 0) AS DPO</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" Scale="0" Size="4" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="Email" ColumnName="" DataSourceName="" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" Scale="0" Size="255" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="AO" DataSetColumn="AO" />
+              <Mapping SourceColumn="VIEWER" DataSetColumn="VIEWER" />
+              <Mapping SourceColumn="Admin" DataSetColumn="Admin" />
+              <Mapping SourceColumn="CSO" DataSetColumn="CSO" />
+              <Mapping SourceColumn="IAO" DataSetColumn="IAO" />
+              <Mapping SourceColumn="IGO" DataSetColumn="IGO" />
+              <Mapping SourceColumn="DELEG" DataSetColumn="DELEG" />
+              <Mapping SourceColumn="DPO" DataSetColumn="DPO" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="isp_OrganisationUsersTableAdapter" GeneratorDataComponentClassName="isp_OrganisationUsersTableAdapter" Name="isp_OrganisationUsers" UserDataComponentName="isp_OrganisationUsersTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="GetData">
+                <DeleteCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>DELETE FROM [isp_OrganisationUsers] WHERE (([OrganisationUserID] = @Original_OrganisationUserID))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_OrganisationUserID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="OrganisationUserID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </DeleteCommand>
+                <InsertCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>INSERT INTO [isp_OrganisationUsers] ([OrganisationID], [OrganisationUserName], [OrganisationUserEmail], [RoleID], [Confirmed], [Active], [DelegateRoleTo], [ResignDate], [ConfirmationHash]) VALUES (@OrganisationID, @OrganisationUserName, @OrganisationUserEmail, @RoleID, @Confirmed, @Active, @DelegateRoleTo, @ResignDate, @ConfirmationHash)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@OrganisationUserName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="OrganisationUserName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@OrganisationUserEmail" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@RoleID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="RoleID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Boolean" Direction="Input" ParameterName="@Confirmed" Precision="0" ProviderType="Bit" Scale="0" Size="0" SourceColumn="Confirmed" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Boolean" Direction="Input" ParameterName="@Active" Precision="0" ProviderType="Bit" Scale="0" Size="0" SourceColumn="Active" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@DelegateRoleTo" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="DelegateRoleTo" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@ResignDate" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="ResignDate" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Guid" Direction="Input" ParameterName="@ConfirmationHash" Precision="0" ProviderType="UniqueIdentifier" Scale="0" Size="0" SourceColumn="ConfirmationHash" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </InsertCommand>
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        OrganisationUserID, OrganisationID,
+                             (SELECT        OrganisationName
+                               FROM            isp_Organisations
+                               WHERE        (OrganisationID = Orgs.OrganisationID)) AS Organisation, OrganisationUserName, OrganisationUserEmail, RoleID,
+                             (SELECT        Role
+                               FROM            isp_Roles
+                               WHERE        (RoleID = Orgs.RoleID)) AS Role, Confirmed, Active, DelegateRoleTo, ResignDate, CAST(0 AS Bit) AS TOUAgreed, ConfirmationHash
+FROM            isp_OrganisationUsers AS Orgs
+ORDER BY OrganisationUserName</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+                <UpdateCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>UPDATE [isp_OrganisationUsers] SET [OrganisationID] = @OrganisationID, [OrganisationUserName] = @OrganisationUserName, [OrganisationUserEmail] = @OrganisationUserEmail, [RoleID] = @RoleID, [Confirmed] = @Confirmed, [Active] = @Active, [DelegateRoleTo] = @DelegateRoleTo, [ResignDate] = @ResignDate, [ConfirmationHash] = @ConfirmationHash WHERE (([OrganisationUserID] = @Original_OrganisationUserID))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@OrganisationUserName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="OrganisationUserName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@OrganisationUserEmail" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@RoleID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="RoleID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Boolean" Direction="Input" ParameterName="@Confirmed" Precision="0" ProviderType="Bit" Scale="0" Size="0" SourceColumn="Confirmed" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Boolean" Direction="Input" ParameterName="@Active" Precision="0" ProviderType="Bit" Scale="0" Size="0" SourceColumn="Active" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@DelegateRoleTo" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="DelegateRoleTo" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@ResignDate" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="ResignDate" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Guid" Direction="Input" ParameterName="@ConfirmationHash" Precision="0" ProviderType="UniqueIdentifier" Scale="0" Size="0" SourceColumn="ConfirmationHash" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_OrganisationUserID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="OrganisationUserID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </UpdateCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="OrganisationUserID" DataSetColumn="OrganisationUserID" />
+              <Mapping SourceColumn="OrganisationID" DataSetColumn="OrganisationID" />
+              <Mapping SourceColumn="Organisation" DataSetColumn="Organisation" />
+              <Mapping SourceColumn="OrganisationUserName" DataSetColumn="OrganisationUserName" />
+              <Mapping SourceColumn="OrganisationUserEmail" DataSetColumn="OrganisationUserEmail" />
+              <Mapping SourceColumn="RoleID" DataSetColumn="RoleID" />
+              <Mapping SourceColumn="Role" DataSetColumn="Role" />
+              <Mapping SourceColumn="Confirmed" DataSetColumn="Confirmed" />
+              <Mapping SourceColumn="Active" DataSetColumn="Active" />
+              <Mapping SourceColumn="DelegateRoleTo" DataSetColumn="DelegateRoleTo" />
+              <Mapping SourceColumn="ResignDate" DataSetColumn="ResignDate" />
+              <Mapping SourceColumn="TOUAgreed" DataSetColumn="TOUAgreed" />
+              <Mapping SourceColumn="ConfirmationHash" DataSetColumn="ConfirmationHash" />
+            </Mappings>
+            <Sources>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetByHashID" GetMethodModifier="Public" GetMethodName="GetByHashID" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetByHashID" UserSourceName="GetByHashID">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        Active, ConfirmationHash, Confirmed, DelegateRoleTo,
+                             (SELECT        OrganisationName
+                               FROM            isp_Organisations
+                               WHERE        (OrganisationID = Orgs.OrganisationID)) AS Organisation, OrganisationID, OrganisationUserEmail, OrganisationUserID, OrganisationUserName, 
+                         ResignDate,
+                             (SELECT        Role
+                               FROM            isp_Roles
+                               WHERE        (RoleID = Orgs.RoleID)) AS Role, RoleID
+FROM            isp_OrganisationUsers AS Orgs
+WHERE        (ConfirmationHash = @HashID)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="HashID" ColumnName="ConfirmationHash" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="uniqueidentifier" DbType="Guid" Direction="Input" ParameterName="@HashID" Precision="0" ProviderType="UniqueIdentifier" Scale="0" Size="16" SourceColumn="ConfirmationHash" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetByOrganisationUserID" GetMethodModifier="Public" GetMethodName="GetByOrganisationUserID" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetByOrganisationUserID" UserSourceName="GetByOrganisationUserID">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT Active, ConfirmationHash, Confirmed, DelegateRoleTo, (SELECT OrganisationName FROM isp_Organisations WHERE (OrganisationID = Orgs.OrganisationID)) AS Organisation, OrganisationID, OrganisationUserEmail, OrganisationUserID, OrganisationUserName, ResignDate, (SELECT Role FROM isp_Roles WHERE (RoleID = Orgs.RoleID)) AS Role, RoleID FROM isp_OrganisationUsers AS Orgs WHERE (OrganisationUserID = @OrganisationUserID)
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationUserID" ColumnName="OrganisationUserID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationUserID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationUserID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetDataByEmail" GetMethodModifier="Public" GetMethodName="GetDataByEmail" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataByEmail" UserSourceName="GetDataByEmail">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT Active, ConfirmationHash, Confirmed, DelegateRoleTo, (SELECT OrganisationName FROM isp_Organisations WHERE (OrganisationID = Orgs.OrganisationID)) AS Organisation, OrganisationID, OrganisationUserEmail, OrganisationUserID, OrganisationUserName, ResignDate, (SELECT Role FROM isp_Roles WHERE (RoleID = Orgs.RoleID)) AS Role, RoleID FROM isp_OrganisationUsers AS Orgs WHERE (OrganisationUserEmail = @UserEmail) AND (ResignDate IS NULL) AND (Active = 1) AND (OrganisationID = @orgid) ORDER BY RoleID
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="UserEmail" ColumnName="OrganisationUserEmail" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@UserEmail" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="orgid" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@orgid" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetDataByOrganisationID" GetMethodModifier="Public" GetMethodName="GetDataByOrganisationID" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataByOrganisationID" UserSourceName="GetDataByOrganisationID">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT Active, ConfirmationHash, Confirmed, DelegateRoleTo, (SELECT OrganisationName FROM isp_Organisations WHERE (OrganisationID = Orgs.OrganisationID)) AS Organisation, OrganisationID, OrganisationUserEmail, OrganisationUserID, OrganisationUserName, ResignDate, (SELECT Role FROM isp_Roles WHERE (RoleID = Orgs.RoleID)) AS Role, RoleID, CAST(0 AS Bit) AS TOUAgreed FROM isp_OrganisationUsers AS Orgs WHERE (OrganisationID = @OrganisationID) AND (Active = @Active OR @Active = 0) ORDER BY OrganisationUserName
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="Active" ColumnName="Active" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="bit" DbType="Boolean" Direction="Input" ParameterName="@Active" Precision="0" ProviderType="Bit" Scale="0" Size="1" SourceColumn="Active" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetOtherAdministrators" GetMethodModifier="Public" GetMethodName="GetOtherAdministrators" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetOtherAdministrators" UserSourceName="GetOtherAdministrators">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT Active, ConfirmationHash, Confirmed, DelegateRoleTo, (SELECT OrganisationName FROM isp_Organisations WHERE (OrganisationID = Orgs.OrganisationID)) AS Organisation, OrganisationID, OrganisationUserEmail, OrganisationUserID, OrganisationUserName, ResignDate, (SELECT Role FROM isp_Roles WHERE (RoleID = Orgs.RoleID)) AS Role, RoleID, CAST(0 AS Bit) AS TOUAgreed FROM isp_OrganisationUsers AS Orgs WHERE (OrganisationID = @OrganisationID) AND (OrganisationUserEmail &lt;&gt; @UserEmail) AND (RoleID IN (5, 8)) ORDER BY OrganisationUserEmail
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="UserEmail" ColumnName="OrganisationUserEmail" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@UserEmail" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetRolesByUser" GetMethodModifier="Public" GetMethodName="GetRolesByUser" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetRolesByUser" UserSourceName="GetRolesByUser">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT Active, ConfirmationHash, Confirmed, DelegateRoleTo, '' AS Organisation, OrganisationID, OrganisationUserEmail, OrganisationUserID, OrganisationUserName, ResignDate, '' AS Role, RoleID, CAST(0 AS Bit) AS TOUAgreed FROM isp_OrganisationUsers AS Orgs WHERE (OrganisationUserEmail = @Email) AND (OrganisationID = @OrganisationID)
+
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="Email" ColumnName="OrganisationUserEmail" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.OrganisationUsers_Add" DbObjectType="StoredProcedure" GenerateShortCommands="true" GeneratorSourceName="InsertQuery" Modifier="Public" Name="InsertQuery" QueryType="Scalar" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy" UserSourceName="InsertQuery">
+                <SelectCommand>
+                  <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                    <CommandText>dbo.OrganisationUsers_Add</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="ReturnValue" ParameterName="@RETURN_VALUE" Precision="10" ProviderType="Int" Scale="0" Size="4" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="10" ProviderType="Int" Scale="0" Size="4" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="nvarchar" DbType="String" Direction="Input" ParameterName="@UserName" Precision="0" ProviderType="NVarChar" Scale="0" Size="50" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="nvarchar" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@RoleID" Precision="10" ProviderType="Int" Scale="0" Size="4" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="isp_RolesTableAdapter" GeneratorDataComponentClassName="isp_RolesTableAdapter" Name="isp_Roles" UserDataComponentName="isp_RolesTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_Roles" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="GetData">
+                <DeleteCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>DELETE FROM [isp_Roles] WHERE (([RoleID] = @Original_RoleID))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_RoleID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="RoleID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </DeleteCommand>
+                <InsertCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>INSERT INTO [isp_Roles] ([Role]) VALUES (@Role)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@Role" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="Role" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </InsertCommand>
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        RoleID, Role, CAST(0 AS Bit) AS IsSelected
+FROM            isp_Roles
+ORDER BY Role</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+                <UpdateCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>UPDATE [isp_Roles] SET [Role] = @Role WHERE (([RoleID] = @Original_RoleID))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@Role" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="Role" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_RoleID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="RoleID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </UpdateCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="RoleID" DataSetColumn="RoleID" />
+              <Mapping SourceColumn="Role" DataSetColumn="Role" />
+              <Mapping SourceColumn="IsSelected" DataSetColumn="IsSelected" />
+            </Mappings>
+            <Sources>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.GetRoles" DbObjectType="Function" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetActiveByUserOrg" GetMethodModifier="Public" GetMethodName="GetActiveByUserOrg" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetActiveByUserOrg" UserSourceName="GetActiveByUserOrg">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        Role, RoleID, IsSelected
+FROM            dbo.GetRoles(@Email, @OrganisationID) AS UserRoles
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="Email" ColumnName="" DataSourceName="" DataTypeServer="nvarchar(510)" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" Scale="0" Size="0" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_Roles" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetAvailableRoles" GetMethodModifier="Public" GetMethodName="GetAvailableRoles" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetAvailableRoles" UserSourceName="GetAvailableRoles">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT   RoleID, Role, CASE WHEN
+                             (SELECT   COUNT(OrganisationUserID)
+                                FROM         isp_OrganisationUsers
+                                WHERE     RoleID = 1 AND RoleID = isp_Roles.RoleID AND Active = 1 AND OrganisationID = @OrganisationID) &gt; 10 THEN 0 ELSE 1 END AS IsSelected
+FROM         isp_Roles
+WHERE     (@OrganisationID &gt; 0)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="AnsiString" Direction="Input" ParameterName="@OrganisationID" Precision="0" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="isp_OrganisationUsersSummaryTableAdapter" GeneratorDataComponentClassName="isp_OrganisationUsersSummaryTableAdapter" Name="isp_OrganisationUsersSummary" UserDataComponentName="isp_OrganisationUsersSummaryTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="GetData">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        OrganisationID, OrganisationUserName, OrganisationUserEmail, CAST(MAX(CAST(Confirmed AS Int)) AS Bit) AS Confirmed, CAST(MAX(CAST(Active AS Int)) AS Bit) 
+                         AS Active, dbo.UserRolesCSV(OrganisationID, OrganisationUserEmail) AS Roles, (SELECT        TOP (1) LastActivityDate
+                               FROM            aspnet_Users
+                               WHERE        (UserName = ou.OrganisationUserEmail)) AS LastAccess
+
+FROM            isp_OrganisationUsers AS ou
+WHERE        (OrganisationID = @OrganisationID)  AND (Active = 1 OR @IncludeInactive = 1)
+GROUP BY OrganisationID, OrganisationUserName, OrganisationUserEmail
+ORDER BY OrganisationUserName
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="IncludeInactive" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="Boolean" Direction="Input" ParameterName="@IncludeInactive" Precision="0" ProviderType="Bit" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="OrganisationID" DataSetColumn="OrganisationID" />
+              <Mapping SourceColumn="OrganisationUserName" DataSetColumn="OrganisationUserName" />
+              <Mapping SourceColumn="OrganisationUserEmail" DataSetColumn="OrganisationUserEmail" />
+              <Mapping SourceColumn="Confirmed" DataSetColumn="Confirmed" />
+              <Mapping SourceColumn="Active" DataSetColumn="Active" />
+              <Mapping SourceColumn="Roles" DataSetColumn="Roles" />
+              <Mapping SourceColumn="LastAccess" DataSetColumn="LastAccess" />
+            </Mappings>
+            <Sources>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetByEmail" GetMethodModifier="Public" GetMethodName="GetByEmail" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetByEmail" UserSourceName="GetByEmail">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        OrganisationID, OrganisationUserName, OrganisationUserEmail, CAST(MAX(CAST(Confirmed AS Int)) AS Bit) AS Confirmed, CAST(MAX(CAST(Active AS Int)) AS Bit) 
+                         AS Active, dbo.UserRolesCSV(OrganisationID, OrganisationUserEmail) AS Roles
+FROM            isp_OrganisationUsers AS ou
+WHERE        (OrganisationID = @OrganisationID) AND (OrganisationUserEmail = @Email)
+GROUP BY OrganisationID, OrganisationUserName, OrganisationUserEmail
+ORDER BY OrganisationUserName
+
+</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="Email" ColumnName="OrganisationUserEmail" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.isp_OrganisationUsers" DbObjectType="Table" GenerateMethods="Get" GenerateShortCommands="true" GeneratorGetMethodName="GetByOrgIDActiveFilter" GetMethodModifier="Public" GetMethodName="GetByOrgIDActiveFilter" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetByOrgIDActiveFilter" UserSourceName="GetByOrgIDActiveFilter">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        OrganisationID, OrganisationUserName, OrganisationUserEmail, CAST(MAX(CAST(Confirmed AS Int)) AS Bit) AS Confirmed, CAST(MAX(CAST(Active AS Int)) AS Bit) 
+                         AS Active, dbo.UserRolesCSV(OrganisationID, OrganisationUserEmail) AS Roles
+FROM            isp_OrganisationUsers AS ou
+WHERE        (OrganisationID = @OrganisationID) AND (Active = 1 OR @HideActive = 0)
+GROUP BY OrganisationID, OrganisationUserName, OrganisationUserEmail
+ORDER BY OrganisationUserName</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="HideActive" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="AnsiString" Direction="Input" ParameterName="@HideActive" Precision="0" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="UserOrgsTableAdapter" GeneratorDataComponentClassName="UserOrgsTableAdapter" Name="UserOrgs" UserDataComponentName="UserOrgsTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateMethods="Get" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="GetData">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        ou.OrganisationID, o.OrganisationName, o.SponsorOrganisationID
+FROM            isp_OrganisationUsers AS ou INNER JOIN
+                         isp_Organisations AS o ON ou.OrganisationID = o.OrganisationID INNER JOIN
+                         isp_Roles AS r ON ou.RoleID = r.RoleID INNER JOIN
+                         aspnet_Membership AS m ON ou.OrganisationUserEmail = m.Email
+WHERE        (ou.ResignDate IS NULL) AND (ou.Active = 1) AND (ou.OrganisationUserEmail = @Email) AND (o.InactivatedDate IS NULL)
+GROUP BY ou.OrganisationID, o.OrganisationName, o.SponsorOrganisationID
+ORDER BY o.SponsorOrganisationID, o.OrganisationName</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="Email" ColumnName="OrganisationUserEmail" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="nvarchar(255)" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumn="OrganisationUserEmail" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="OrganisationID" DataSetColumn="OrganisationID" />
+              <Mapping SourceColumn="OrganisationName" DataSetColumn="OrganisationName" />
+              <Mapping SourceColumn="SponsorOrganisationID" DataSetColumn="SponsorOrganisationID" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources>
+          <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateShortCommands="true" GeneratorSourceName="CountDPOsForOrg" MethodsParameterType="CLR" Modifier="Public" Name="CountDPOsForOrg" QueryType="Scalar" ScalarCallRetval="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy" UserSourceName="CountDPOsForOrg">
+            <SelectCommand>
+              <DbCommand CommandType="Text" ModifiedByUser="true">
+                <CommandText>
+SELECT        CASE WHEN
+                             (SELECT        DPOExempt
+                               FROM            isp_Organisations
+                               WHERE        OrganisationID = @OrgID) = 1 THEN 1 ELSE COUNT(ou.OrganisationUserID) END AS DPOs
+FROM            isp_OrganisationUsers AS ou
+WHERE        (RoleID = 10) AND (OrganisationID = @OrgID)</CommandText>
+                <Parameters>
+                  <Parameter AllowDbNull="false" AutogeneratedName="OrgID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrgID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                </Parameters>
+              </DbCommand>
+            </SelectCommand>
+          </DbSource>
+          <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateShortCommands="true" GeneratorSourceName="GetActiveUsersPerOrganisation" MethodsParameterType="CLR" Modifier="Public" Name="GetActiveUsersPerOrganisation" QueryType="Scalar" ScalarCallRetval="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy1" UserSourceName="GetActiveUsersPerOrganisation">
+            <SelectCommand>
+              <DbCommand CommandType="Text" ModifiedByUser="true">
+                <CommandText>SELECT        COUNT (DISTINCT OrganisationUserEmail) AS Users
+FROM            isp_OrganisationUsers
+WHERE        (OrganisationID = @OrganisationID) AND (Active = 1)</CommandText>
+                <Parameters>
+                  <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_OrganisationUsers" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                </Parameters>
+              </DbCommand>
+            </SelectCommand>
+          </DbSource>
+          <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="" DbObjectType="Unknown" GenerateShortCommands="true" GeneratorSourceName="DPOExemptOrganisation" MethodsParameterType="CLR" Modifier="Public" Name="DPOExemptOrganisation" QueryType="NoData" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy2" UserSourceName="DPOExemptOrganisation">
+            <UpdateCommand>
+              <DbCommand CommandType="Text" ModifiedByUser="true">
+                <CommandText>UPDATE       isp_Organisations
+SET                DPOExempt = @Exempt
+WHERE        (OrganisationID = @OrganisationID)</CommandText>
+                <Parameters>
+                  <Parameter AllowDbNull="false" AutogeneratedName="Exempt" ColumnName="DPOExempt" DataSourceName="dpiatool.dbo.isp_Organisations" DataTypeServer="bit" DbType="Boolean" Direction="Input" ParameterName="@Exempt" Precision="0" ProviderType="Bit" Scale="0" Size="1" SourceColumn="DPOExempt" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="OrganisationID" DataSourceName="dpiatool.dbo.isp_Organisations" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="OrganisationID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                </Parameters>
+              </DbCommand>
+            </UpdateCommand>
+          </DbSource>
+          <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateShortCommands="true" GeneratorSourceName="GetAdminGroupIDFromName" MethodsParameterType="CLR" Modifier="Public" Name="GetAdminGroupIDFromName" QueryType="Scalar" ScalarCallRetval="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy3" UserSourceName="GetAdminGroupIDFromName">
+            <SelectCommand>
+              <DbCommand CommandType="Text" ModifiedByUser="true">
+                <CommandText>SELECT       TOP(1) COALESCE(AdminGroupID, 0) AS AdminGroupID
+FROM            isp_AdminGroups
+WHERE        (REPLACE(GroupName, ' ', '') = @groupname)</CommandText>
+                <Parameters>
+                  <Parameter AllowDbNull="false" AutogeneratedName="groupname" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="AnsiString" Direction="Input" ParameterName="@groupname" Precision="0" Scale="0" Size="1024" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                </Parameters>
+              </DbCommand>
+            </SelectCommand>
+          </DbSource>
+          <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.OrganisationUsers_All_In_One" DbObjectType="StoredProcedure" GenerateShortCommands="true" GeneratorSourceName="OrganisationUsers_All_In_One" MethodsParameterType="CLR" Modifier="Public" Name="OrganisationUsers_All_In_One" QueryType="Scalar" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy4" UserSourceName="OrganisationUsers_All_In_One">
+            <SelectCommand>
+              <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                <CommandText>dbo.OrganisationUsers_All_In_One</CommandText>
+                <Parameters>
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="ReturnValue" ParameterName="@RETURN_VALUE" Precision="10" ProviderType="Int" Scale="0" Size="4" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="nvarchar" DbType="String" Direction="Input" ParameterName="@Email" Precision="0" ProviderType="NVarChar" Scale="0" Size="255" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="10" ProviderType="Int" Scale="0" Size="4" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@RoleID" Precision="10" ProviderType="Int" Scale="0" Size="4" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="nvarchar" DbType="String" Direction="Input" ParameterName="@OrganisationUserName" Precision="0" ProviderType="NVarChar" Scale="0" Size="50" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="bit" DbType="Boolean" Direction="Input" ParameterName="@Active" Precision="1" ProviderType="Bit" Scale="0" Size="1" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="bit" DbType="Boolean" Direction="Input" ParameterName="@StatusActive" Precision="1" ProviderType="Bit" Scale="0" Size="1" SourceColumnNullMapping="false" SourceVersion="Current" />
+                </Parameters>
+              </DbCommand>
+            </SelectCommand>
+          </DbSource>
+          <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectType="Unknown" GenerateShortCommands="true" GeneratorSourceName="GetSeniorUserEmails" MethodsParameterType="CLR" Modifier="Public" Name="GetSeniorUserEmails" QueryType="Scalar" ScalarCallRetval="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy5" UserSourceName="GetSeniorUserEmails">
+            <SelectCommand>
+              <DbCommand CommandType="Text" ModifiedByUser="true">
+                <CommandText>SELECT [dbo].[SeniorUsersAtOrgCSV] (
+   @OrganisationID)</CommandText>
+                <Parameters>
+                  <Parameter AllowDbNull="false" AutogeneratedName="OrganisationID" ColumnName="" DataSourceName="" DataTypeServer="unknown" DbType="Int32" Direction="Input" ParameterName="@OrganisationID" Precision="0" Scale="0" Size="0" SourceColumn="" SourceColumnNullMapping="false" SourceVersion="Current" />
+                </Parameters>
+              </DbCommand>
+            </SelectCommand>
+          </DbSource>
+          <DbSource ConnectionRef="dpiasandpitConnectionString (Web.config)" DbObjectName="dpiatool.dbo.VerifyRegistration" DbObjectType="StoredProcedure" GenerateShortCommands="true" GeneratorSourceName="VerifyRegistration" MethodsParameterType="CLR" Modifier="Public" Name="VerifyRegistration" QueryType="Scalar" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy6" UserSourceName="VerifyRegistration">
+            <SelectCommand>
+              <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
+                <CommandText>dbo.VerifyRegistration</CommandText>
+                <Parameters>
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="ReturnValue" ParameterName="@RETURN_VALUE" Precision="10" ProviderType="Int" Scale="0" Size="4" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="varchar" DbType="AnsiString" Direction="Input" ParameterName="@ConfirmationHash" Precision="0" ProviderType="VarChar" Scale="0" Size="128" SourceColumnNullMapping="false" SourceVersion="Current" />
+                  <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DataTypeServer="uniqueidentifier" DbType="Guid" Direction="Input" ParameterName="@UserID" Precision="0" ProviderType="UniqueIdentifier" Scale="0" Size="16" SourceColumnNullMapping="false" SourceVersion="Current" />
+                </Parameters>
+              </DbCommand>
+            </SelectCommand>
+          </DbSource>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="isporgusers" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="isporgusers" msprop:Generator_UserDSName="isporgusers">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="VerifyByEmailTable" msprop:Generator_TableClassName="VerifyByEmailTableDataTable" msprop:Generator_TableVarName="tableVerifyByEmailTable" msprop:Generator_TablePropName="VerifyByEmailTable" msprop:Generator_RowDeletingName="VerifyByEmailTableRowDeleting" msprop:Generator_RowChangingName="VerifyByEmailTableRowChanging" msprop:Generator_RowEvHandlerName="VerifyByEmailTableRowChangeEventHandler" msprop:Generator_RowDeletedName="VerifyByEmailTableRowDeleted" msprop:Generator_UserTableName="VerifyByEmailTable" msprop:Generator_RowChangedName="VerifyByEmailTableRowChanged" msprop:Generator_RowEvArgName="VerifyByEmailTableRowChangeEvent" msprop:Generator_RowClassName="VerifyByEmailTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OrganisationID" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOrganisationID" msprop:Generator_ColumnPropNameInRow="OrganisationID" msprop:Generator_ColumnPropNameInTable="OrganisationIDColumn" msprop:Generator_UserColumnName="OrganisationID" type="xs:int" minOccurs="0" />
+              <xs:element name="OrganisationUserEmail" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOrganisationUserEmail" msprop:Generator_ColumnPropNameInRow="OrganisationUserEmail" msprop:Generator_ColumnPropNameInTable="OrganisationUserEmailColumn" msprop:Generator_UserColumnName="OrganisationUserEmail" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RoleID" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnRoleID" msprop:Generator_ColumnPropNameInRow="RoleID" msprop:Generator_ColumnPropNameInTable="RoleIDColumn" msprop:Generator_UserColumnName="RoleID" type="xs:int" minOccurs="0" />
+              <xs:element name="ConfirmationHash" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnConfirmationHash" msprop:Generator_ColumnPropNameInRow="ConfirmationHash" msprop:Generator_ColumnPropNameInTable="ConfirmationHashColumn" msprop:Generator_UserColumnName="ConfirmationHash" type="xs:string" minOccurs="0" />
+              <xs:element name="Confirmed" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnConfirmed" msprop:Generator_ColumnPropNameInRow="Confirmed" msprop:Generator_ColumnPropNameInTable="ConfirmedColumn" msprop:Generator_UserColumnName="Confirmed" type="xs:boolean" minOccurs="0" />
+              <xs:element name="OrganisationTypeID" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOrganisationTypeID" msprop:Generator_ColumnPropNameInRow="OrganisationTypeID" msprop:Generator_ColumnPropNameInTable="OrganisationTypeIDColumn" msprop:Generator_UserColumnName="OrganisationTypeID" type="xs:int" minOccurs="0" />
+              <xs:element name="SponsorOrganisationID" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnSponsorOrganisationID" msprop:Generator_ColumnPropNameInRow="SponsorOrganisationID" msprop:Generator_ColumnPropNameInTable="SponsorOrganisationIDColumn" msprop:Generator_UserColumnName="SponsorOrganisationID" type="xs:int" minOccurs="0" />
+              <xs:element name="Role" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnRole" msprop:Generator_ColumnPropNameInRow="Role" msprop:Generator_ColumnPropNameInTable="RoleColumn" msprop:Generator_UserColumnName="Role" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OrganisationUserName" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOrganisationUserName" msprop:Generator_ColumnPropNameInRow="OrganisationUserName" msprop:Generator_ColumnPropNameInTable="OrganisationUserNameColumn" msprop:Generator_UserColumnName="OrganisationUserName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="UserId" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnUserId" msprop:Generator_ColumnPropNameInRow="UserId" msprop:Generator_ColumnPropNameInTable="UserIdColumn" msprop:Generator_UserColumnName="UserId" type="xs:string" minOccurs="0" />
+              <xs:element name="OrganisationName" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOrganisationName" msprop:Generator_ColumnPropNameInRow="OrganisationName" msprop:Generator_ColumnPropNameInTable="OrganisationNameColumn" msprop:Generator_UserColumnName="OrganisationName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ICORegistrationNumber" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnICORegistrationNumber" msprop:Generator_ColumnPropNameInRow="ICORegistrationNumber" msprop:Generator_ColumnPropNameInTable="ICORegistrationNumberColumn" msprop:Generator_UserColumnName="ICORegistrationNumber" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TotalOrgs" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnTotalOrgs" msprop:Generator_ColumnPropNameInRow="TotalOrgs" msprop:Generator_ColumnPropNameInTable="TotalOrgsColumn" msprop:Generator_UserColumnName="TotalOrgs" type="xs:int" minOccurs="0" />
+              <xs:element name="IsSuperAdmin" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnIsSuperAdmin" msprop:Generator_ColumnPropNameInRow="IsSuperAdmin" msprop:Generator_ColumnPropNameInTable="IsSuperAdminColumn" msprop:Generator_UserColumnName="IsSuperAdmin" type="xs:boolean" minOccurs="0" />
+              <xs:element name="AdminGroupID" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnAdminGroupID" msprop:Generator_ColumnPropNameInRow="AdminGroupID" msprop:Generator_ColumnPropNameInTable="AdminGroupIDColumn" msprop:Generator_UserColumnName="AdminGroupID" type="xs:int" minOccurs="0" />
+              <xs:element name="TOUAgreed" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnTOUAgreed" msprop:Generator_ColumnPropNameInRow="TOUAgreed" msprop:Generator_ColumnPropNameInTable="TOUAgreedColumn" msprop:Generator_UserColumnName="TOUAgreed" type="xs:boolean" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="UserAdminRoles" msprop:Generator_TableClassName="UserAdminRolesDataTable" msprop:Generator_TableVarName="tableUserAdminRoles" msprop:Generator_RowChangedName="UserAdminRolesRowChanged" msprop:Generator_TablePropName="UserAdminRoles" msprop:Generator_RowDeletingName="UserAdminRolesRowDeleting" msprop:Generator_RowChangingName="UserAdminRolesRowChanging" msprop:Generator_RowEvHandlerName="UserAdminRolesRowChangeEventHandler" msprop:Generator_RowDeletedName="UserAdminRolesRowDeleted" msprop:Generator_RowClassName="UserAdminRolesRow" msprop:Generator_UserTableName="UserAdminRoles" msprop:Generator_RowEvArgName="UserAdminRolesRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AO" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnAO" msprop:Generator_ColumnPropNameInRow="AO" msprop:Generator_ColumnPropNameInTable="AOColumn" msprop:Generator_UserColumnName="AO" type="xs:int" minOccurs="0" />
+              <xs:element name="VIEWER" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnVIEWER" msprop:Generator_ColumnPropNameInRow="VIEWER" msprop:Generator_ColumnPropNameInTable="VIEWERColumn" msprop:Generator_UserColumnName="VIEWER" type="xs:int" minOccurs="0" />
+              <xs:element name="Admin" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnAdmin" msprop:Generator_ColumnPropNameInRow="Admin" msprop:Generator_ColumnPropNameInTable="AdminColumn" msprop:Generator_UserColumnName="Admin" type="xs:int" minOccurs="0" />
+              <xs:element name="CSO" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCSO" msprop:Generator_ColumnPropNameInRow="CSO" msprop:Generator_ColumnPropNameInTable="CSOColumn" msprop:Generator_UserColumnName="CSO" type="xs:int" minOccurs="0" />
+              <xs:element name="IAO" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnIAO" msprop:Generator_ColumnPropNameInRow="IAO" msprop:Generator_ColumnPropNameInTable="IAOColumn" msprop:Generator_UserColumnName="IAO" type="xs:int" minOccurs="0" />
+              <xs:element name="IGO" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnIGO" msprop:Generator_ColumnPropNameInRow="IGO" msprop:Generator_ColumnPropNameInTable="IGOColumn" msprop:Generator_UserColumnName="IGO" type="xs:int" minOccurs="0" />
+              <xs:element name="DELEG" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnDELEG" msprop:Generator_ColumnPropNameInRow="DELEG" msprop:Generator_ColumnPropNameInTable="DELEGColumn" msprop:Generator_UserColumnName="DELEG" type="xs:int" minOccurs="0" />
+              <xs:element name="DPO" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnDPO" msprop:Generator_ColumnPropNameInRow="DPO" msprop:Generator_ColumnPropNameInTable="DPOColumn" msprop:Generator_UserColumnName="DPO" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="isp_OrganisationUsers" msprop:Generator_TableClassName="isp_OrganisationUsersDataTable" msprop:Generator_TableVarName="tableisp_OrganisationUsers" msprop:Generator_RowChangedName="isp_OrganisationUsersRowChanged" msprop:Generator_TablePropName="isp_OrganisationUsers" msprop:Generator_RowDeletingName="isp_OrganisationUsersRowDeleting" msprop:Generator_RowChangingName="isp_OrganisationUsersRowChanging" msprop:Generator_RowEvHandlerName="isp_OrganisationUsersRowChangeEventHandler" msprop:Generator_RowDeletedName="isp_OrganisationUsersRowDeleted" msprop:Generator_RowClassName="isp_OrganisationUsersRow" msprop:Generator_UserTableName="isp_OrganisationUsers" msprop:Generator_RowEvArgName="isp_OrganisationUsersRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OrganisationUserID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnOrganisationUserID" msprop:Generator_ColumnPropNameInRow="OrganisationUserID" msprop:Generator_ColumnPropNameInTable="OrganisationUserIDColumn" msprop:Generator_UserColumnName="OrganisationUserID" type="xs:int" />
+              <xs:element name="OrganisationID" msprop:Generator_ColumnVarNameInTable="columnOrganisationID" msprop:Generator_ColumnPropNameInRow="OrganisationID" msprop:Generator_ColumnPropNameInTable="OrganisationIDColumn" msprop:Generator_UserColumnName="OrganisationID" type="xs:int" />
+              <xs:element name="Organisation" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnOrganisation" msprop:Generator_ColumnPropNameInRow="Organisation" msprop:Generator_ColumnPropNameInTable="OrganisationColumn" msprop:Generator_UserColumnName="Organisation" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OrganisationUserName" msprop:Generator_ColumnVarNameInTable="columnOrganisationUserName" msprop:Generator_ColumnPropNameInRow="OrganisationUserName" msprop:Generator_ColumnPropNameInTable="OrganisationUserNameColumn" msprop:Generator_UserColumnName="OrganisationUserName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OrganisationUserEmail" msprop:Generator_ColumnVarNameInTable="columnOrganisationUserEmail" msprop:Generator_ColumnPropNameInRow="OrganisationUserEmail" msprop:Generator_ColumnPropNameInTable="OrganisationUserEmailColumn" msprop:Generator_UserColumnName="OrganisationUserEmail">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RoleID" msprop:Generator_ColumnVarNameInTable="columnRoleID" msprop:Generator_ColumnPropNameInRow="RoleID" msprop:Generator_ColumnPropNameInTable="RoleIDColumn" msprop:Generator_UserColumnName="RoleID" type="xs:int" />
+              <xs:element name="Role" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnRole" msprop:Generator_ColumnPropNameInRow="Role" msprop:Generator_ColumnPropNameInTable="RoleColumn" msprop:Generator_UserColumnName="Role" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Confirmed" msprop:Generator_ColumnVarNameInTable="columnConfirmed" msprop:Generator_ColumnPropNameInRow="Confirmed" msprop:Generator_ColumnPropNameInTable="ConfirmedColumn" msprop:Generator_UserColumnName="Confirmed" type="xs:boolean" />
+              <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:boolean" />
+              <xs:element name="DelegateRoleTo" msprop:Generator_ColumnVarNameInTable="columnDelegateRoleTo" msprop:Generator_ColumnPropNameInRow="DelegateRoleTo" msprop:Generator_ColumnPropNameInTable="DelegateRoleToColumn" msprop:Generator_UserColumnName="DelegateRoleTo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ResignDate" msprop:Generator_ColumnVarNameInTable="columnResignDate" msprop:Generator_ColumnPropNameInRow="ResignDate" msprop:Generator_ColumnPropNameInTable="ResignDateColumn" msprop:Generator_UserColumnName="ResignDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TOUAgreed" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnTOUAgreed" msprop:Generator_ColumnPropNameInRow="TOUAgreed" msprop:Generator_ColumnPropNameInTable="TOUAgreedColumn" msprop:Generator_UserColumnName="TOUAgreed" type="xs:boolean" minOccurs="0" />
+              <xs:element name="ConfirmationHash" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msprop:Generator_ColumnVarNameInTable="columnConfirmationHash" msprop:Generator_ColumnPropNameInRow="ConfirmationHash" msprop:Generator_ColumnPropNameInTable="ConfirmationHashColumn" msprop:Generator_UserColumnName="ConfirmationHash" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="isp_Roles" msprop:Generator_TableClassName="isp_RolesDataTable" msprop:Generator_TableVarName="tableisp_Roles" msprop:Generator_RowChangedName="isp_RolesRowChanged" msprop:Generator_TablePropName="isp_Roles" msprop:Generator_RowDeletingName="isp_RolesRowDeleting" msprop:Generator_RowChangingName="isp_RolesRowChanging" msprop:Generator_RowEvHandlerName="isp_RolesRowChangeEventHandler" msprop:Generator_RowDeletedName="isp_RolesRowDeleted" msprop:Generator_RowClassName="isp_RolesRow" msprop:Generator_UserTableName="isp_Roles" msprop:Generator_RowEvArgName="isp_RolesRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RoleID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnRoleID" msprop:Generator_ColumnPropNameInRow="RoleID" msprop:Generator_ColumnPropNameInTable="RoleIDColumn" msprop:Generator_UserColumnName="RoleID" type="xs:int" />
+              <xs:element name="Role" msprop:Generator_ColumnVarNameInTable="columnRole" msprop:Generator_ColumnPropNameInRow="Role" msprop:Generator_ColumnPropNameInTable="RoleColumn" msprop:Generator_UserColumnName="Role">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IsSelected" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnIsSelected" msprop:Generator_ColumnPropNameInRow="IsSelected" msprop:Generator_ColumnPropNameInTable="IsSelectedColumn" msprop:Generator_UserColumnName="IsSelected" type="xs:boolean" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="isp_OrganisationUsersSummary" msprop:Generator_TableClassName="isp_OrganisationUsersSummaryDataTable" msprop:Generator_TableVarName="tableisp_OrganisationUsersSummary" msprop:Generator_RowChangedName="isp_OrganisationUsersSummaryRowChanged" msprop:Generator_TablePropName="isp_OrganisationUsersSummary" msprop:Generator_RowDeletingName="isp_OrganisationUsersSummaryRowDeleting" msprop:Generator_RowChangingName="isp_OrganisationUsersSummaryRowChanging" msprop:Generator_RowEvHandlerName="isp_OrganisationUsersSummaryRowChangeEventHandler" msprop:Generator_RowDeletedName="isp_OrganisationUsersSummaryRowDeleted" msprop:Generator_RowClassName="isp_OrganisationUsersSummaryRow" msprop:Generator_UserTableName="isp_OrganisationUsersSummary" msprop:Generator_RowEvArgName="isp_OrganisationUsersSummaryRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OrganisationID" msprop:Generator_ColumnVarNameInTable="columnOrganisationID" msprop:Generator_ColumnPropNameInRow="OrganisationID" msprop:Generator_ColumnPropNameInTable="OrganisationIDColumn" msprop:Generator_UserColumnName="OrganisationID" type="xs:int" />
+              <xs:element name="OrganisationUserName" msprop:Generator_ColumnVarNameInTable="columnOrganisationUserName" msprop:Generator_ColumnPropNameInRow="OrganisationUserName" msprop:Generator_ColumnPropNameInTable="OrganisationUserNameColumn" msprop:Generator_UserColumnName="OrganisationUserName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OrganisationUserEmail" msprop:Generator_ColumnVarNameInTable="columnOrganisationUserEmail" msprop:Generator_ColumnPropNameInRow="OrganisationUserEmail" msprop:Generator_ColumnPropNameInTable="OrganisationUserEmailColumn" msprop:Generator_UserColumnName="OrganisationUserEmail">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Confirmed" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnConfirmed" msprop:Generator_ColumnPropNameInRow="Confirmed" msprop:Generator_ColumnPropNameInTable="ConfirmedColumn" msprop:Generator_UserColumnName="Confirmed" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Active" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Roles" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnRoles" msprop:Generator_ColumnPropNameInRow="Roles" msprop:Generator_ColumnPropNameInTable="RolesColumn" msprop:Generator_UserColumnName="Roles" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="8000" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LastAccess" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnLastAccess" msprop:Generator_ColumnPropNameInRow="LastAccess" msprop:Generator_ColumnPropNameInTable="LastAccessColumn" msprop:Generator_UserColumnName="LastAccess" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="UserOrgs" msprop:Generator_TableClassName="UserOrgsDataTable" msprop:Generator_TableVarName="tableUserOrgs" msprop:Generator_RowChangedName="UserOrgsRowChanged" msprop:Generator_TablePropName="UserOrgs" msprop:Generator_RowDeletingName="UserOrgsRowDeleting" msprop:Generator_RowChangingName="UserOrgsRowChanging" msprop:Generator_RowEvHandlerName="UserOrgsRowChangeEventHandler" msprop:Generator_RowDeletedName="UserOrgsRowDeleted" msprop:Generator_RowClassName="UserOrgsRow" msprop:Generator_UserTableName="UserOrgs" msprop:Generator_RowEvArgName="UserOrgsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OrganisationID" msprop:Generator_ColumnVarNameInTable="columnOrganisationID" msprop:Generator_ColumnPropNameInRow="OrganisationID" msprop:Generator_ColumnPropNameInTable="OrganisationIDColumn" msprop:Generator_UserColumnName="OrganisationID" type="xs:int" />
+              <xs:element name="OrganisationName" msprop:Generator_ColumnVarNameInTable="columnOrganisationName" msprop:Generator_ColumnPropNameInRow="OrganisationName" msprop:Generator_ColumnPropNameInTable="OrganisationNameColumn" msprop:Generator_UserColumnName="OrganisationName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SponsorOrganisationID" msprop:Generator_ColumnVarNameInTable="columnSponsorOrganisationID" msprop:Generator_ColumnPropNameInRow="SponsorOrganisationID" msprop:Generator_ColumnPropNameInTable="SponsorOrganisationIDColumn" msprop:Generator_UserColumnName="SponsorOrganisationID" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:isp_OrganisationUsers" />
+      <xs:field xpath="mstns:OrganisationUserID" />
+    </xs:unique>
+    <xs:unique name="isp_Roles_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:isp_Roles" />
+      <xs:field xpath="mstns:RoleID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

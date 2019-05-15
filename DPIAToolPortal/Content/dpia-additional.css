@@ -1,0 +1,124 @@
+﻿#rr-element label {
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+}
+
+.FormatRadioButtonList label {
+    margin-right: .5em;
+}
+
+.popover {
+    max-width: 50%;
+    max-height: 100%;
+}
+
+.dpiaradio1 div {
+    clear: both;
+    overflow: hidden;
+}
+
+.dpiaradio1 label {
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid #D1D3D4;
+    font-weight: bold;
+    color: #D1D3D4;
+}
+
+.dpiaradio1 input[type="radio"]:empty,
+.dpiaradio1 input[type="checkbox"]:empty {
+    display: none;
+}
+
+    .dpiaradio1 input[type="radio"]:empty ~ label,
+    .dpiaradio1 input[type="checkbox"]:empty ~ label {
+        position: relative;
+        line-height: 1.8em;
+        text-indent: 3.2em;
+        margin-top: .1em;
+        margin-left: .5em;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        .dpiaradio1 input[type="radio"]:empty ~ label:before,
+        .dpiaradio1 input[type="checkbox"]:empty ~ label:before {
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            content: '';
+            width: 2.5em;
+            background: #D1D3D4;
+            border-radius: 3px 0 0 3px;
+        }
+
+.dpiaradio1 input[type="radio"]:hover:not(:checked) ~ label,
+.dpiaradio1 input[type="checkbox"]:hover:not(:checked) ~ label {
+    color: #888;
+}
+
+    .dpiaradio1 input[type="radio"]:hover:not(:checked) ~ label:before,
+    .dpiaradio1 input[type="checkbox"]:hover:not(:checked) ~ label:before {
+        content: '\2714';
+        text-indent: .9em;
+        color: #C2C2C2;
+    }
+
+.dpiaradio1 input[type="radio"]:checked ~ label,
+.dpiaradio1 input[type="checkbox"]:checked ~ label {
+    color: black;
+}
+
+    .dpiaradio1 input[type="radio"]:checked ~ label:before,
+    .dpiaradio1 input[type="checkbox"]:checked ~ label:before {
+        content: '\2714';
+        text-indent: .9em;
+        color: #fff;
+        background-color: #5cb85c;
+    }
+
+.dpiaradio1 input[type="radio"]:focus ~ label:before,
+.dpiaradio1 input[type="checkbox"]:focus ~ label:before {
+    box-shadow: 0 0 0 3px #999;
+}
+
+.dpiaradio1-default input[type="radio"]:checked ~ label:before,
+.dpiaradio1-default input[type="checkbox"]:checked ~ label:before {
+    color: #333;
+    background-color: #ccc;
+}
+
+.dpiaradio1-primary input[type="radio"]:checked ~ label:before,
+.dpiaradio1-primary input[type="checkbox"]:checked ~ label:before {
+    color: #fff;
+    background-color: #337ab7;
+}
+
+.dpiaradio1-success input[type="radio"]:checked ~ label:before,
+.dpiaradio1-success input[type="checkbox"]:checked ~ label:before {
+    color: #fff;
+    background-color: #5cb85c;
+}
+
+.dpiaradio1-danger input[type="radio"]:checked ~ label:before,
+.dpiaradio1-danger input[type="checkbox"]:checked ~ label:before {
+    color: #fff;
+    background-color: #d9534f;
+}
+
+.dpiaradio1-warning input[type="radio"]:checked ~ label:before,
+.dpiaradio1-warning input[type="checkbox"]:checked ~ label:before {
+    color: #fff;
+    background-color: #f0ad4e;
+}
+
+.dpiaradio1-info input[type="radio"]:checked ~ label:before,
+.dpiaradio1-info input[type="checkbox"]:checked ~ label:before {
+    color: #fff;
+    background-color: #5bc0de;
+}

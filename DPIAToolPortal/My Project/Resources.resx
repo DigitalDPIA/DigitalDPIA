@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MOUHtml" xml:space="preserve">
+    <value>&lt;div class="pre-scrollable"&gt;
+                            &lt;div class="panel-body"&gt;
+                                &lt;p&gt;This Memorandum of Understanding sets out the general principles of Information Governance that all organisations who access and use the Data Protection Impact Assessment Tool have agreed to.  It provides a framework for safeguarding the processing of all personal confidential information.&lt;/p&gt;
+                                &lt;h4&gt;General principles&lt;/h4&gt;
+                                &lt;ol&gt;
+                                    &lt;li&gt;The Information Governance Toolkit&lt;sup&gt;1&lt;/sup&gt; defines the minimum standards for Information
+Governance for health and social care. Where applicable, each organisation is committed to undertaking, following and complying with the Information Governance Toolkit as a minimum of Level 2.  Where Level 2 has not been met, an action plan for necessary improvements agreed with either a lead or partner organisation.
+                                    &lt;/li&gt;
+                                    &lt;li&gt;Each organisation shall have appointed a responsible / accountable officer who will ensure the protection of personal information for example a Caldicott Guardian or senior manager&lt;sup&gt;2&lt;/sup&gt; responsible for data protection.&lt;/li&gt;
+                                    &lt;li&gt;Each organisation will be take appropriate organisational and technical measures towards compliance with Data Protection Act 1998, Caldicott Principles, ISO 27001 Series of Information Security Standards, Freedom of Information Act 2000 and national guidance and rules around processing personal confidential information and other relevant legislation.&lt;/li&gt;
+                                    &lt;li&gt;Each organisation is committed to identifying, documenting and risk assessing their data flows with any mitigating actions defined and agreed.&lt;/li&gt;
+                                    &lt;li&gt;Each organisation is committed to ensuring staff are appropriately trained and comply with organisational policies in relation to Information Governance, including data protection, Confidentiality, Caldicott Principles, Information Security, Records Management and Freedom of Information.&lt;/li&gt;
+                                    &lt;li&gt;Organisations will promptly notify other partner organisations any Information Governance breach, vulnerability or threat that could affect the security of the data being shared.&lt;/li&gt;
+                                    &lt;li&gt;Organisations will agree to allow partner or lead organisations, or its representatives, to carry out audits or visits to confirm compliance with agreed assurance requirements.&lt;/li&gt;
+                                    &lt;li&gt;Each organisation commits to ensure that the data is shared in a safe and secure manner meeting the agreed purpose of the sharing.&lt;/li&gt;
+                                    &lt;li&gt;Any requests for information under the Freedom of Information Act 2000 or the Data Protection Act 1998 should be directed to the original organisation's data protection officer.&lt;/li&gt;
+                                    &lt;li&gt;Organisations may not create or establish onward sharing without the explicit permission of the original organisation's data protection officer. &lt;/li&gt;
+                                &lt;/ol&gt;
+                                &lt;p&gt;
+                                    &lt;sup&gt;1&lt;/sup&gt; The &lt;a target="_blank" href="https://nww.igt.hscic.gov.uk"&gt;Information Governance Toolkit&lt;/a&gt; is an online performance tool produced by the Department of
+Health (DH) and hosted by the Health and Social Care Information Centre (HSCIC). It allows NHS organisations and partners to assess themselves against DH information governance policies and standards.
+                                &lt;/p&gt;
+                                &lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; In Health and local authorities, this may be the Senior Information Risk Owner (SIRO). Other agencies may not have these identified roles and, therefore, it will be a senior manager responsible for ensuring compliance with Data Protection.&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;</value>
+  </data>
+</root>

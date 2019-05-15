@@ -1,0 +1,31 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="DisableMultiselectShowAll" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">{ allSelectedText: 'All Selected', buttonText: function(options, select) { var numberOfOptions = $(this).children('option').length; if (options.length === 0) { return 'None Selected'; } else { var labels = []; options.each(function() { if ($(this).attr('label') !== undefined) { labels.push($(this).attr('label')); } else { labels.push($(this).html()); } }); return labels.join('&lt;/br&gt;') + ''; } }, buttonWidth: '100%', buttonClass: 'btn btn-default btn-wrap', }</Value>
+    </Setting>
+    <Setting Name="csISPData" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=localhost;Initial Catalog=ispdata;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=localhost;Initial Catalog=ispdata;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="csICOData" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=localhost;Initial Catalog=icodata;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=localhost;Initial Catalog=icodata;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="ErrorLogEmailTo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">hugh.gibson@mbhci.nhs.uk</Value>
+    </Setting>
+    <Setting Name="ErrorLogEmailCC" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">isg@mbhci.nhs.uk</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

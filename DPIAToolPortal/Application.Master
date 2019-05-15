@@ -1,0 +1,478 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Application.master.vb" Inherits="InformationSharingPortal.Application" %>
+
+<!DOCTYPE html>
+<html lang="en">
+   <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+    window.cookieconsent_options = { "message": "This website uses session cookies to remember who you are when communicating with the web server and database. It also uses cookies to store your interface settings.", "dismiss": "OK", "learnMore": "More info", "link": "isg_privacy.aspx", "theme": "dark-top" };
+    var isIE11 = !!(navigator.userAgent.match(/Trident/) && !navigator.userAgent.match(/MSIE/));
+    if (isIE11) {
+        if (typeof window.attachEvent == "undefined" || !window.attachEvent) {
+            window.attachEvent = window.addEventListener;
+        }
+    }
+    function onToolbarItemClick(s, e) {
+        switch (e.item.name) {
+            case "Reset":
+                e.processOnServer = true;
+                e.usePostBack = true;
+                break;
+            case "Export":
+                  e.processOnServer = true;
+                e.usePostBack = true;
+                break;
+            case "ExportSO":
+                var btn = document.getElementById('lbtExportDAList');
+               
+                btn.click();
+        }
+    }
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.10/cookieconsent.min.js"></script>
+<!-- End Cookie Consent plugin -->
+<head runat="server">
+    <meta charset="utf-8" />
+    <title>Data Protection Impact Assessment Tool</title>
+    <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference ID="BundleReference1" runat="server" Path="~/Content/css" />
+    <link runat="server" href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <link href="Content/moon.css" rel="stylesheet" />
+    <link href="Content/loading.min.css" rel="stylesheet" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server" EnableCdn="true">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=272931&clcid=0x409 --%>
+                <%--Framework scripts--%>
+
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="jquery.ui.combined" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+        <script>window.jQuery || document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">\x3C/script><script src="//code.jquery.com/ui/1.11.2/jquery-ui.js">\x3C/script>')</script>
+        <%--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>--%>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.min.js"></script>
+
+        <%--<script type="text/javascript" src="Scripts/bsasper.js"></script>--%>
+        <!--[if lte IE 8]>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+        <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+<![endif]-->
+
+        <div id="layout" class="container ">
+            <div class="row clearfix">
+                <div class="col-lg-12 column">
+                    <div id="mainhead">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <h2>
+                                    <small>
+                                        <asp:Label ID="lblOrganisation" runat="server" Text=""></asp:Label>
+                                    </small>
+                                </h2>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <nav role="navigation" class="navbar navbar-inverse">
+                        <div class="navbar-header">
+                            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <span class="navbar-brand visible-lg-inline">
+                                <asp:Image ID="imgCubeLogo" runat="server" ImageUrl="~/Images/DPIA-HS-inverted-small.png" ToolTip="The Data Protection Impact Assessment Tool" AlternateText="Data Protection Impact Assessment Tool Logo" />
+                            </span>
+                        </div>
+                        <div id="navbarCollapse" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav">
+
+                                
+
+                               <li id="liProjects" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtProjects" CssClass="dropdown-toggle" data-hover="dropdown" runat="server" OnClick="lbt_Click" CommandArgument="projects"><span class="icon hidden-sm"><i aria-hidden="true" class="icon-list"></i></span> Projects
+                                    </asp:LinkButton>
+                                </li> 
+
+                                <li id="liFlows" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtFlows" CssClass="dropdown-toggle" data-hover="dropdown" visible="false" runat="server" OnClick="lbt_Click" CommandArgument="summaries_list"><span class="icon hidden-sm"><i aria-hidden="true" class="icon-shuffle"></i></span> Data Sharing
+                                    </asp:LinkButton>
+                                    <ul class="dropdown-menu">
+                                        <li id="liSummaryList" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtSummaryDDList" runat="server" OnClick="lbt_Click" CommandArgument="summaries_list"><i aria-hidden="true" class="icon-shuffle"></i>Data Sharing List</asp:LinkButton>
+                                        </li>
+                                        <li id="liFlowList" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtFlowDDList" runat="server" OnClick="lbt_Click" CommandArgument="flows_list"><i aria-hidden="true" class="icon-list"></i>Data Flow List</asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </li>                                
+                                
+                                
+                                <li id="liOrg" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtOrganisation" CssClass="dropdown-toggle" data-hover="dropdown" runat="server" OnClick="lbt_Click" CommandArgument="org_users">
+                                <span class="icon hidden-sm"><i aria-hidden="true" class="icon-office"></i></span> Organisation
+                                    </asp:LinkButton>
+                                    <ul class="dropdown-menu">
+                                        <li id="liOrgUsers" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtOrgDDUsers" runat="server" OnClick="lbt_Click" CommandArgument="org_users"><i aria-hidden="true" class="icon-users"></i>Manage Users</asp:LinkButton>
+                                        </li>
+                                        <li id="liOrgSupported" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtOrgDDSupported" runat="server" OnClick="lbt_Click" CommandArgument="org_Supported"><i aria-hidden="true" class="icon-tree"></i>Supported Organisations</asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="liAdmin" runat="server">
+                                    <asp:LinkButton ID="lbtAdmin" OnClick="lbt_Click" CausesValidation="False" CssClass="dropdown-toggle" data-hover="dropdown" CommandArgument="admin_registered" runat="server"><span class="icon hidden-sm"><i aria-hidden="true" class="icon-cogs"></i></span> Admin</asp:LinkButton>
+                                    <ul class="dropdown-menu">
+                                        <li id="liAdminDDRegisteredUsers" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtAdminDDRegisteredUsers" runat="server" OnClick="lbt_Click" CommandArgument="admin_registered"><i aria-hidden="true" class="icon-users"></i>Registered Users</asp:LinkButton>
+                                        </li>
+                                        <li id="liAdminDDOrganisations" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtAdminDDOrganisaitons" runat="server" OnClick="lbt_Click" CommandArgument="admin_organisations"><i aria-hidden="true" class="icon-office"></i>Organisations</asp:LinkButton>
+                                        </li>
+                                        <li id="liAdminDDOrgUsers" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtAdminDDOrgUsers" runat="server" OnClick="lbt_Click" CommandArgument="admin_orgusers"><i aria-hidden="true" class="icon-user"></i>Organisation Users</asp:LinkButton>
+                                        </li>
+                                        <li id="liAdminDDLists" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtAdminDDLists" runat="server" OnClick="lbt_Click" CommandArgument="admin_lists"><i aria-hidden="true" class="icon-list"></i>Manage Lists</asp:LinkButton>
+                                        </li>
+                                        <li id="liAdminDDConfig" runat="server">
+                                            <asp:LinkButton CausesValidation="False" ID="lbtAdminDDConfig" runat="server" OnClick="lbt_Click" CommandArgument="admin_config"><i aria-hidden="true" class="icon-cogs"></i>Config</asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li id="liManage" runat="server">
+                                    <asp:LinkButton ID="lbtManage" runat="server" ToolTip="Click to change password" PostBackUrl="~/application/Manage.aspx">
+                                        <i aria-hidden="true" class="icon-key"></i>
+                                    </asp:LinkButton>
+                                </li>
+                                <li id="liAbout" runat="server">
+                                    <asp:LinkButton ID="lbtAbout" PostBackUrl="~/About" runat="server" CausesValidation="False"><i aria-hidden="true" class="icon-question"></i>About</asp:LinkButton>
+                                </li>
+                                <li id="liContact" runat="server">
+                                    <asp:LinkButton ID="lbtContact" PostBackUrl="~/Contact" runat="server" CausesValidation="False"><i aria-hidden="true" class="icon-envelope"></i>Contact</asp:LinkButton>
+                                </li>
+                                <li id="liLogoff" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtLogOff" ClientIDMode="Static" runat="server"><i aria-hidden="true" class="icon-logout"></i><span class="hidden-sm hidden-md">Log off</span></asp:LinkButton>
+                                </li>
+                                <li id="liRegister" runat="server">
+                                    <a id="registerLink" runat="server" href="~/Account/Register"><i aria-hidden="true" class="icon-pencil2"></i>Register</a>
+                                </li>
+                                <li id="liLogin" runat="server"><a id="loginLink" runat="server" href="~/Account/Login"><i aria-hidden="true" class="icon-login"></i>Log in</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <asp:MultiView ID="mvNavigation" runat="server">
+                        <asp:View ID="vHome" runat="server">
+                            <ul class="nav nav-pills">
+                                <li id="tabHomeIntray" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtHomeIntray" runat="server" OnClick="lbt_Click" CommandArgument="home_intray"><i aria-hidden="true" class="icon-home"></i>In-tray</asp:LinkButton>
+                                </li>
+                                <li id="tabHomeProfile" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtHomeProfile" runat="server" OnClick="lbt_Click" CommandArgument="home_profile"><i aria-hidden="true" class="icon-user"></i>Profile</asp:LinkButton>
+                                </li>
+                            </ul>
+                        </asp:View>
+                        <asp:View ID="vOrg" runat="server">
+
+                            <ul class="nav nav-pills">
+                                <li id="tabOrgUsers" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtOrgUsers" runat="server" OnClick="lbt_Click" CommandArgument="org_users"><i aria-hidden="true" class="icon-users"></i>Manage Users</asp:LinkButton>
+                                </li>
+                            </ul>
+
+                        </asp:View>
+                        <asp:View ID="vInventory" runat="server">
+
+                            <ul class="nav nav-pills">
+                                <li id="tabInvDatasets" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtInventsub" runat="server" OnClick="lbt_Click" CommandArgument="inv_dataset_list"><span class="icon hidden-sm"><i aria-hidden="true" class="icon-cabinet"></i></span>Inventory</asp:LinkButton>
+                                </li>
+                            </ul>
+
+                        </asp:View>
+
+                        <asp:View ID="vFlows" runat="server">
+
+                            <ul class="nav nav-pills">
+                                <li id="tabSummaryList" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtSummaryList" runat="server" OnClick="lbt_Click" CommandArgument="summaries_list"><i aria-hidden="true" class="icon-shuffle"></i>Data Sharing List</asp:LinkButton>
+                                </li>
+                                <li id="tabFlowSummary" runat="server" class="disabled">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtFlowSummary" CssClass="disabled" Enabled="false" runat="server" OnClick="lbt_Click" CommandArgument="dataflow_summary"><i aria-hidden="true" class="icon-stack"></i>Data Sharing Summary</asp:LinkButton>
+                                </li>
+                                <li id="tabFlowList" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtFlowList" runat="server" OnClick="lbt_Click" CommandArgument="flows_list"><i aria-hidden="true" class="icon-list"></i>Data Flow List</asp:LinkButton>
+                                </li>
+                                <li id="tabFlowDetail" runat="server" class="disabled">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtFlowDetail" CssClass="disabled" Enabled="false" runat="server" OnClick="lbt_Click" CommandArgument="dataflow_detail"><i aria-hidden="true" class="icon-file"></i>Data Flow Detail</asp:LinkButton>
+                                </li>
+
+                            </ul>
+                        </asp:View>
+                        <asp:View ID="vAdmin" runat="server">
+
+                            <ul class="nav nav-pills">
+                                <li id="tabAdminRegisteredUsers" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtAdminRegisteredUsers" runat="server" OnClick="lbt_Click" CommandArgument="admin_registered"><i aria-hidden="true" class="icon-users"></i>Registered Users</asp:LinkButton>
+                                </li>
+                                <li id="tabAdminOrganisations" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtAdminOrganisaitons" runat="server" OnClick="lbt_Click" CommandArgument="admin_organisations"><i aria-hidden="true" class="icon-office"></i>Organisations</asp:LinkButton>
+                                </li>
+                                <li id="tabAdminOrgUsers" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtAdminOrgUsers" runat="server" OnClick="lbt_Click" CommandArgument="admin_orgusers"><i aria-hidden="true" class="icon-user"></i>Organisation Users</asp:LinkButton>
+                                </li>
+                                <li id="tabAdminLists" runat="server">
+                                    <asp:LinkButton CausesValidation="False" ID="lbtAdminLists" runat="server" OnClick="lbt_Click" CommandArgument="admin_lists"><i aria-hidden="true" class="icon-list"></i>Manage Lists</asp:LinkButton>
+                                </li>
+                            </ul>
+                        </asp:View>
+                    </asp:MultiView>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div id="subHead" class="page-header">
+                        <div class="jumbotron" id="PreloginHeader" runat="server">
+                            <h1>
+                                <asp:Label ID="lblSiteHeading" runat="server" Text="Data Protection Impact Assessment Tool"></asp:Label></h1>
+                            <h2><small>
+                                <asp:Label ID="lblSiteSubheading" runat="server" Text="Governance and assurance for Data Protection Impact Assessments, developed in Lancashire and Cumbria."></asp:Label></small></h2>
+
+                        </div>
+                        <asp:ContentPlaceHolder runat="server" ID="PageHeading" />
+
+                    </div>
+                </div>
+            </div>
+            <div id="main" class="row clearfix">
+                <div class="col-md-12 column">
+                    <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+
+                </div>
+            </div>
+            <div id="footer" class="container sticky-footer">
+                <div class="pull-right">
+
+                    <a style="cursor: pointer;" class="btn-default btn-sm" data-toggle="modal" data-target="#termsMessage"><i aria-hidden="true" class="icon-signup hidden-sm"></i>
+                        Terms of use
+                    </a>
+                    <a style="cursor: pointer;" class="btn-default btn-sm" data-toggle="modal" data-target="#securityMessage"><i aria-hidden="true" class="icon-lock hidden-sm"></i>
+                        Security
+                    </a><a style="cursor: pointer;" class="btn-default btn-sm" data-toggle="modal" data-target="#privacyMessage"><i aria-hidden="true" class="icon-eye hidden-sm"></i>
+                        Privacy
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <%-- Privacy Modal --%>
+        <div id="privacyMessage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblPrivacyHeading" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">Privacy and Cookies</h3>
+                        <h3><small>This Privacy Notice tells you what to expect when the Data Protection Impact Assessment Tool collects personal information.</small></h3>
+                    </div>
+                    <div class="modal-body" style="max-height: 600px; overflow: auto;">
+                        <asp:Literal ID="litPrivacyDetail" runat="server"></asp:Literal>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%-- Security Modal --%>
+        <div id="securityMessage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblSecurityHeading" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">
+                            <asp:Label ID="lblSecurityHeading" runat="server">
+                                Security Statement
+                            </asp:Label>
+                        </h3>
+                    </div>
+                    <div class="modal-body" style="max-height: 600px; overflow: auto;">
+                        <asp:Literal ID="litSecurityDetail" runat="server"></asp:Literal>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%-- Terms Modal --%>
+        <div id="termsMessage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lbltermsHeading" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">
+                            <asp:Label ID="lbltermsHeading" runat="server">Data Protection Impact Assessment Tool Terms & Conditions</asp:Label></h3>
+                    </div>
+                    <div class="modal-body" style="max-height: 600px; overflow: auto;">
+
+                        <asp:Literal ID="litTOUDetail" runat="server"></asp:Literal>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <%-- Timeout Modal --%>
+        <div id="timeoutMessage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblTimeoutHeading" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">
+                            <label id="lblTimeoutHeading">Your DPIA Session is About to Expire</label>
+                            </h3>
+                    </div>
+                    <div class="modal-body" style="max-height: 600px; overflow: auto;">
+
+                       <label id="lblTimeoutMessage"></label>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnKeepAlive" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <asp:HiddenField runat="server" ID="hfPosition" Value="" />
+    </form>
+    <script>
+
+        
+        var sessionTimeout = '<%= Session.Timeout %>';
+        var sessionTimeoutWarning = sessionTimeout-5;
+       // alert(sessionTimeout);
+        var timeOnPageLoad = new Date();
+        var sessionWarningTimer = null;
+        var redirectToWelcomePageTimer = null;
+        //For warning
+        var sessionWarningTimer = setTimeout('SessionWarning()', parseInt(sessionTimeoutWarning) * 60 * 1000);
+        //To redirect to the welcome page
+        var redirectToWelcomePageTimer = setTimeout('RedirectToWelcomePage()', parseInt(sessionTimeout) * 60 * 1000);
+        var modalShown = false;
+        //Session Warning
+
+        function SessionWarning() {
+            //minutes left for expiry
+            var minutesForExpiry = (parseInt(sessionTimeout) - parseInt(sessionTimeoutWarning));
+            var message = "Your DPIA session will expire in another " + minutesForExpiry + " minutes due to inactivity. Do you want to extend the session?";
+            $('#lblTimeoutMessage').text(message);
+            //Confirm the user if he wants to extend the session
+            //answer = confirm(message);
+            if (!modalShown) {
+                //answer = confirm(message);
+                $('#timeoutMessage').modal('show');
+                modalShown = true;
+            }
+
+            //*************************
+            //Even after clicking ok(extending session) or cancel button, 
+            //if the session time is over. Then exit the session.
+            var currentTime = new Date();
+            //time for expiry
+            var timeForExpiry = timeOnPageLoad.setMinutes(timeOnPageLoad.getMinutes() + parseInt(sessionTimeout));
+
+            //Current time is greater than the expiry time
+            if (Date.parse(currentTime) > timeForExpiry) {
+                $('#timeoutMessage').modal('hide');
+                alert("DPIA Session expired. You will be redirected to login page.");
+                window.location = "../Account/Login.aspx?doclear=1";
+            }
+            //**************************
+        }
+
+        //Session timeout
+        function RedirectToWelcomePage() {
+            $('#timeoutMessage').modal('hide');
+            alert("DPIA Session expired. You will be redirected to the login page.");
+            //$('#lbtLogOff').click();
+            window.location = "../Account/Login.aspx?doclear=1"; //&returnurl=" & window.location.pathname;
+        }
+
+        $(function () {
+            var f = $("#<%=hfPosition.ClientID%>");
+            window.onload = function () {
+                var position = parseInt(f.val());
+                if (!isNaN(position)) {
+                    $(window).scrollTop(position);
+                }
+            };
+            window.onscroll = function () {
+                var position = $(window).scrollTop();
+                f.val(position);
+            };
+            $('#btnKeepAlive').on('click', function () {
+                modalShown = false;
+                var img = new Image(1, 1);
+                img.src = '../KeepAlive.aspx?date=' + escape(new Date());
+
+                //Clear the RedirectToWelcomePage method
+                if (redirectToWelcomePageTimer != null) {
+                    clearTimeout(redirectToWelcomePageTimer);
+                }
+                //reset the time on page load
+                timeOnPageLoad = new Date();
+                sessionWarningTimer = setTimeout('SessionWarning()', parseInt(sessionTimeoutWarning) * 60 * 1000);
+                //To redirect to the welcome page
+                redirectToWelcomePageTimer = setTimeout('RedirectToWelcomePage()', parseInt(sessionTimeout) * 60 * 1000);
+            })
+        });
+        (function (e) {
+            var $winWidth = e(window).width();
+            e(document).on('show.bs.modal', function () {
+                if ($winWidth < e(window).width()) {
+                    e('body.modal-open,.navbar-fixed-top,.navbar-fixed-bottom').css('marginRight', e(window).width() - $winWidth)
+                }
+            });
+            e(document).on('hidden.bs.modal', function () {
+                e('body,.navbar-fixed-top,.navbar-fixed-bottom').css('marginRight', 0)
+            });
+        })(jQuery);
+    </script>
+
+
+
+
+</body>
+</html>
